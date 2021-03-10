@@ -71,12 +71,16 @@ static void xfile_settitle()
     _getcwd(cwd, MAX_PATH);
     sprintf(title, "XFILE on %s:%d at %s, %u opened %u closed", 
             __xf_svr_ipaddr, __xf_svr_port, cwd, __xf_opened_num, __xf_closed_num);
+    printf ("%s", title);
 }
 
 int xfile_start(char *szXfHost, unsigned short usPort)
 {
     int r;
+    int s;
+    int addrlen;
     struct sockaddr_in addr_s = {0};
+    struct sockaddr_in addr_c = {0};
 
     __skt_s = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (__skt_s < 0) {
@@ -101,6 +105,15 @@ int xfile_start(char *szXfHost, unsigned short usPort)
     __xf_svr_port = (int)usPort;
     xfile_settitle();
 
+    XFILE_INFO(0, "XFILE is listening on %s:%u\r\n", szXfHost, usPort);
+    for (;;) {
+        addrlen = sizeof(struct sockaddr_in);
+        s = (int)accept (__skt_s, (struct sockaddr *)&addr_c, (socklen_t *)&addrlen);
+        if (s <= 0) {
+            XFILE_INFO(0, "Error (%d) occurs during accepting new client\r\n", s);
+            break;   
+        }
+    }
 
     (void)close(__skt_s);
 }
