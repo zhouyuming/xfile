@@ -3,12 +3,6 @@
 #include <winsock2.h>
 #include <time.h>
 #include <ws2tcpip.h>
-#elif (defined(NSE_PLATFORM_VXWORKS)||defined(__VxWorks__))
-#include <socklib.h>
-#include <socket.h>
-#include <in.h>
-#include <ioLib.h>
-#include <inetLib.h>
 #else
 #include <sys/types.h>
 #include <sys/socket.h>
