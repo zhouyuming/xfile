@@ -1,5 +1,5 @@
 #include <stdio.h>
-#if (defined(NSE_PLATFORM_WIN) || defined(WIN32))
+#if defined(WIN32)
 #include <winsock2.h>
 #include <time.h>
 #include <ws2tcpip.h>
